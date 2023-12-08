@@ -1,25 +1,24 @@
 <script setup lang="ts">
-const clien = useSupabaseClient()
+const client = useSupabaseClient()
 
 const isLoading = ref(false)
 const email = ref('')
 const password = ref('')
 const errMessage = ref('')
 
-const handleLogin = async (e: Event) => {
-  if (isLoading.value || email.value === '' || password.value === '') return
+const signUp = async (e: Event) => {
   try {
-    isLoading.value = true
-    const { data, error } = await clien.auth.signInWithPassword({
-      email: email.value,
-      password: password.value,
-    })
+    if (isLoading || !email.value || !password.value) return
+    const { data, error } = await client.auth.signUp(
+      {
+        email: email.value,
+        password: password.value,
+      }
+    )
+
     if (error) errMessage.value = error?.message
   } catch (error) {
     console.error(error);
-  }
-  finally {
-    isLoading.value = false
   }
 }
 
@@ -27,16 +26,16 @@ const handleLogin = async (e: Event) => {
 
 <template>
   <div class="wrapper">
-    <span class="title">Log into 🐣</span>
+    <span class="title">Sign Up 🐣</span>
     <div class="form">
-      <input v-model="email" type="email" placeholder="Email">
-      <input v-model="password" type="password" placeholder="Password">
-      <input type="button" :value="isLoading ? 'Loading...' : 'Log in'" @click="handleLogin">
+      <input v-model="email" type="email" placeholder="Email" autocomplete="off">
+      <input v-model="password" type="password" placeholder="Password" autocomplete="new-password">
+      <input type="button" :value="isLoading ? 'Loading...' : 'Log in'" @click="signUp">
     </div>
     <span class="error">{{ errMessage }}</span>
-    <span class="help">계정이 없으신가요?
-      <NuxtLink to="/sign-up">
-        가입하러 가기 &rarr;
+    <span class="help">이미 계정이 있으신가요?
+      <NuxtLink to="/login">
+        로그인하러 가기 &rarr;
       </NuxtLink>
     </span>
   </div>
