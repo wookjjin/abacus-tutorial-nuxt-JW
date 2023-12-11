@@ -14,7 +14,8 @@ const handleLogin = async (e: Event) => {
       email: email.value,
       password: password.value,
     })
-    if (error) errMessage.value = error?.message
+
+    errMessage.value = error?.message ?? ''
   } catch (error) {
     console.error(error);
   }
