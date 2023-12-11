@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const client = useSupabaseClient()
 
+const router = useRouter()
 const isLoading = ref(false)
 const email = ref('')
 const password = ref('')
@@ -8,15 +9,16 @@ const errMessage = ref('')
 
 const signUp = async (e: Event) => {
   try {
-    if (isLoading || !email.value || !password.value) return
-    const { data, error } = await client.auth.signUp(
+    if (isLoading.value || !email.value || !password.value) return
+    const { error } = await client.auth.signUp(
       {
         email: email.value,
         password: password.value,
       }
     )
-
     errMessage.value = error?.message ?? ''
+    if (error) return
+    router.push('/login')
   } catch (error) {
     console.error(error);
   }

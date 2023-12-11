@@ -9,13 +9,4 @@
   </div>
 </template>
 
-
-<style lang="scss" scoped>
-.container {
-  display: flex;
-
-  p {
-    align-items: center;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

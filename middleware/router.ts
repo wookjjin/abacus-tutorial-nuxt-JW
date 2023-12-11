@@ -1,3 +1,4 @@
+// https://nuxt.com/docs/getting-started/routing
 import { useUser } from '~/composable/user'
 
 export default defineNuxtRouteMiddleware((to, from) => {

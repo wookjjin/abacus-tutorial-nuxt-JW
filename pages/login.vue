@@ -1,6 +1,7 @@
 <script setup lang="ts">
-const clien = useSupabaseClient()
+const client = useSupabaseClient()
 
+const router = useRouter()
 const isLoading = ref(false)
 const email = ref('')
 const password = ref('')
@@ -10,12 +11,13 @@ const handleLogin = async (e: Event) => {
   if (isLoading.value || email.value === '' || password.value === '') return
   try {
     isLoading.value = true
-    const { data, error } = await clien.auth.signInWithPassword({
+    const { data, error } = await client.auth.signInWithPassword({
       email: email.value,
       password: password.value,
     })
 
-    errMessage.value = error?.message ?? ''
+    if (error) return
+    router.push('/home')
   } catch (error) {
     console.error(error);
   }
